@@ -4,4 +4,4 @@ draft = true
 title = 'Placeholder Post'
 +++
 
-This is a placeholder post for testing the blog.
+This is a placeholder post for testing the blog. Testing if this triggers a gh-pages build.

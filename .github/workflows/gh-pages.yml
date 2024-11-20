@@ -24,6 +24,15 @@ jobs:
     - name: Build the site
       run: hugo --minify
 
+    - name: Show Current Directory
+      run: pwd
+
+    - name: List Files in Current Directory
+      run: ls -la
+
+    - name: List Files in 'public' Directory
+      run: ls -la public
+
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:

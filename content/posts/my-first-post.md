@@ -1,6 +1,6 @@
 +++
 date = '2024-11-20T12:06:43+05:30'
-draft = true
+draft = false
 title = 'Placeholder Post'
 +++
 

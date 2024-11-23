@@ -102,7 +102,7 @@ ColPali leverages **Vision-Language Models (VLMs)** to generate embeddings for b
 The **Vision Transformer (ViT)** processes each patch independently and generates embeddings:
 
 $$
-⁍
+E_{\text{img}} = \text{VisionEncoder}(x_{\text{img}}) = \{ e_1, e_2, \dots, e_m \}
 $$
 
 where $E_{\text{img}} \in \mathbb{R}^{m \times D}$ and $D$ is the dimensionality of the embedding space.
@@ -156,32 +156,27 @@ Let’s say our **text embedding** is of size **768 and** image embedding of siz
 This is done using a **linear projection**:
 
 $$
-\hat{E}_{text} = W_{text} \cdot E_{text} + b_{text}
+E^{\text{text}} = W_{text} \cdot E_{text} + b_{text}
 $$
 
 $$
-\hat{E}_{image} = W_{image} \cdot E_{image} + b_{image}
+E^{\text{image}} = W_{image} \cdot E_{image} + b_{image}
 $$
 
 Where:
 
-- `$E_{text}$` is your original text embedding (a vector of size 768).
-- `$W_{text} \in \mathbb{R}^{128 \times 768}$` is the weight matrix that that transforms the text embedding from dimension 768 to 128.
-- `$b_{text} \in \mathbb{R}^{128}$` is a bias term that shifts the transformed vector appropriately.
-- `$E_{image}$` is the original image embedding (a vector of size 1024).
-- `$W_{image} \in \mathbb{R}^{128 \times 1024}$` is the weight matrix that that transforms the image embeddings from dimension 1024 to 128.
-- `$b_{image} \in \mathbb{R}^{128}$` is a bias term.
+- $E_{text}$ is your original text embedding (a vector of size 768).
+- $W_{text} \in \mathbb{R}^{128 \times 768}$ is the weight matrix that transforms the text embedding from dimension 768 to 128.
+- $b_{text} \in \mathbb{R}^{128}$ is a bias term that shifts the transformed vector appropriately.
+- $E_{image}$ is the original image embedding (a vector of size 1024).
+- $W_{image} \in \mathbb{R}^{128 \times 1024}$ is the weight matrix that transforms the image embeddings from dimension 1024 to 128.
+- $b_{image} \in \mathbb{R}^{128}$ is a bias term.
 
 This shared space enables cross-modal comparisons, meaning a textual query can retrieve relevant document images based on visual content, such as tables, charts, or other visual elements.
 
-<aside>
-🏹
-
-Bonus: You might ask why 128 shared space dimension was used in Colpali? Any specific reason?
+🏹 **Bonus: You might ask why 128 shared space dimension was used in Colpali? Any specific reason?**
 
 To maintain a balance between memory efficiency and computational cost, while minimizing performance drops, we chose a 128-dimensional embedding. This dimension will later be used in a multi-vector reranking process, so smaller is better, but it’s essential to strike the right balance for performance. Future versions are planned to offer the option to increase the embedding dimensions.
-
-</aside>
 
 ---
 
@@ -200,20 +195,20 @@ Late Interaction computes the similarity between **each query token** and **each
 - **Dot product:** For each query token $e_i′$ compute its similarity with each image patch $e_j$ using the dot product. This gives a measure of how well query token $e_i′$ aligns with image patch $e_j$.
 
 $$
-⁍
+\text{Similarity}(e'_i, e_j) = e_i' \cdot e_j
 $$
 
 - **MaxSim (Maximum Similarity)**: For each query token $e_i′$ , find the **most similar image patch** using the maximum similarity across all image patches. This ensures that only the most relevant image patch is considered for each query token.
     
-    $$
-    ⁍
-    $$
+$$
+\text{MaxSim}(e'_i, E_{\text{img}}) = \max_{j=1}^{m} \langle e'_i, e_j \rangle
+$$
     
 - **Late Interaction Score**: Finally, the total similarity score between the query and the document is computed by summing up the maximum similarities for all query tokens.
     
-    $$
-    ⁍
-    $$
+$$
+LI(E_{\text{query}}, E_{\text{img}}) = \sum_{i=1}^{n} \text{MaxSim}(e'_i, E_{\text{img}})
+$$
     
 
 ![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/92600531-2c3b-49dc-8a0a-ae3d4117a608/406f4594-4003-4ffb-abc4-acfe504896d2/image.png)
@@ -241,33 +236,29 @@ For a given batch of **$b$** query-document pairs, this loss encourages the mode
 
 1. **Late Interaction Similarity**: Using the **Late Interaction** mechanism we discussed earlier, the similarity between the query $q_k$ and its relevant document $d_k$ is computed as:
     
-    $$
-    ⁍
-    $$
+$$
+s^+_k = LI(q_k, d_k)
+$$
     
 2. **Negative Similarity**: Similarly, the similarity between the query $q_k$ and any other document page $d_l$ is computed using the **max similarity** from Late Interaction: 
     
-    $$
-    ⁍
-    $$
+$$
+s^-_k = max_{l ≠ k} LI(q_k, d_l)
+$$
     
 3. **In-Batch Contrastive Loss**: The final **contrastive loss** for a batch of size **$b$**  is calculated using **softmaxed cross-entropy** between the positive score and all the negative scores:
     
-    $$
-    Loss (L) = - \frac{1}{b} \sum_{k=1}^{b} \log \frac{\exp(s^+_k)}{\sum_{l=1}^{b} \exp(s^-_l)}
-    $$
+$$
+Loss (L) = - \frac{1}{b} \sum_{k=1}^{b} \log \frac{\exp(s^+_k)}{\sum_{l=1}^{b} \exp(s^-_l)}
+$$
+
+---
+
+### 💡 But why these -1/b, log, exp, etc. etc.? If that’s not making sense to you, then let's understand the intuition behind the formula.
+
+- **Breaking down the contrastive loss formula and reasoning behind it in detail.**
     
-
-<aside>
-💡
-
-But why these -1/b, log, exp, etc. etc.? If that’s not making sense to you, then please expand and understand the intuition behind the formula.
-
-</aside>
-
-- **Breaking down the contrastive loss formula and reasoning behind it in detail. [Please expand]**
-    
-    ### **1. Negative Sign and Averaging (-1/b)**
+    ### Negative Sign and Averaging (-1/b)
     
     The loss starts with a **negative sign** and is multiplied by $\frac{-1}{b}$, where $b$ is the batch size. Let’s explain the intuition behind this:
     
@@ -276,9 +267,7 @@ But why these -1/b, log, exp, etc. etc.? If that’s not making sense to you, th
     - **Why** $\frac{-1}{b}$**?**
     It’s a standard **averaging** technique used to normalize the loss over the batch size, to ensure that the training process is **stable**, regardless of the batch size.
     
-    ---
-    
-    ### **2. Logarithm (log)**
+    ### Logarithm (log)
     
     The log in the contrastive loss plays a crucial role in how the model is trained.
     
@@ -288,11 +277,8 @@ But why these -1/b, log, exp, etc. etc.? If that’s not making sense to you, th
         When a model predicts a value close to 1 for the positive pair (high similarity), the log of this value will be small (i.e., minimal penalty). However, if the model predicts a low similarity for the correct pair (close to 0), the log value will be very **large and negative**, resulting in a larger penalty.
         
         This **logarithmic scaling** makes the model more sensitive to large errors, driving the optimization to **shrink** the loss for confident predictions and penalize wrong predictions.
-        
     
-    ---
-    
-    ### **3. Exponentiation (exp) in the Numerator and Denominator**
+    ### Exponentiation (exp) in the Numerator and Denominator
     
     - **Why Use Exponentiation?**
     The reason we use exponentiation is to convert the similarity score into a **probability** through the **softmax function**. The softmax function is commonly used to calculate probabilities in multi-class classification tasks.
@@ -301,9 +287,7 @@ But why these -1/b, log, exp, etc. etc.? If that’s not making sense to you, th
     - **Why Apply $\exp(s^+_k)$ to the Positive Pair?**
     The **positive pair** is placed in the numerator because we want the **highest probability** to be assigned to the correct query-document pair. By applying the exponential function, we are amplifying the differences in similarity scores, ensuring that **higher similarity scores** result in **higher probabilities**.
     
-    ---
-    
-    ### **4. Why Maximum Similarity for Negative Pairs?**
+    ### Why Maximum Similarity for Negative Pairs?
     
     When computing the negative similarity, we use the **maximum similarity** between the query and all incorrect document pages $d_l$, where $l \neq k$. This is because in the contrastive loss, we want to ensure that the model learns to **separate** the positive pair from the **most similar negative pair**.
     
@@ -390,8 +374,6 @@ As we near the conclusion of this blog, wouldn't you be curious to explore the o
 ## **Results and Lessons from ColPali’s Iterative Development**
 
 In constructing **ColPali**, the authors iteratively built and improved upon various models, starting with an off-the-shelf **SigLIP** model, followed by pairing SigLIP with a language model (**PaliGemma**) and finally adding **Late Interaction** (as seen above). Each iteration provided insights into the model's performance across different document retrieval tasks, particularly for documents with complex visual elements like tables and figures.
-
----
 
 ### **Improvements with BiSigLIP**
 

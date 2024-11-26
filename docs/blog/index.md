@@ -1,4 +1,4 @@
-# Writing
+# Blog
 
 Hello, we write about VisionRAG. 
 

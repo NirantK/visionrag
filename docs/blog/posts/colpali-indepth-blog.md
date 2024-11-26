@@ -28,7 +28,8 @@ ColPali addresses this by using **Vision-Language Models (VLMs)** to understand 
     - **BiPali** for pairing image patches with PaliGemma.
     - **Late Interaction** to achieve state-of-the-art performance.
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/92600531-2c3b-49dc-8a0a-ae3d4117a608/e324e990-115b-4dbc-8b71-dabdaf9cb4bf/image.png)
+![image.png](../images/lime-viz.png)
+This image is just for demonstration to give how images can be added here. 
 
 ---
 

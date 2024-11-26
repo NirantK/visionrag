@@ -61,15 +61,15 @@ theme:
         name: Switch to light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: teal
-      accent: blue
+      primary: deep purple
+      accent: indigo
       toggle:
         icon: material/toggle-switch
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: teal
-      accent: cyan
+      primary: deep purple
+      accent: amber
       toggle:
         icon: material/toggle-switch-off
         name: Switch to light mode

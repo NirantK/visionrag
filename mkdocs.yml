@@ -1,6 +1,6 @@
 site_name: VisionRAG
 site_url: https://visionrag.ai/
-site_author: VisionRAG
+site_author: Vision RAG
 
 remote_branch: gh-pages
 remote_name: origin
@@ -55,21 +55,21 @@ theme:
     - search.suggest
     - toc.follow
   palette:
-    # - media: "(prefers-color-scheme)"
-    #   toggle:
-    #     icon: material/link
-    #     name: Switch to light mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/link
+        name: Switch to light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: indigo
-      accent: indigo
+      primary: teal
+      accent: blue
       toggle:
         icon: material/toggle-switch
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: amber
-      accent: indigo
+      primary: teal
+      accent: cyan
       toggle:
         icon: material/toggle-switch-off
         name: Switch to light mode
@@ -127,7 +127,6 @@ markdown_extensions:
 plugins:
   - search
   - blog:
-      blog_dir: writing
       post_url_format: "{file}"
       pagination: true
       pagination_per_page: 3
@@ -181,5 +180,5 @@ extra_javascript:
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
-copyright: Copyright &copy; 2024 Scaled Focus
+copyright: Copyright &copy; 2024 Scaled Focu
 

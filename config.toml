@@ -1,5 +1,0 @@
-baseURL = "https://visionrag.ai/"
-languageCode = "en-us"
-title = "VisionRAG"
-theme = "PaperMod"
-publishDir = "public"

@@ -1,0 +1,26 @@
+authors:
+  antaripasaha:
+    name: Antaripa Saha
+    description: AI Engineer, Author
+    url: https://www.linkedin.com/in/antaripa/
+    avatar: https://media.licdn.com/dms/image/v2/D5603AQEC2K_CA2dIOg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1728967421425?e=1738195200&v=beta&t=kY1xEhj5NYWe0omU86hfCdWbk9hwxC0yQ671NOoyxs4
+  nirant:
+    name: Nirant Kasliwal
+    description: AI Engineer
+    url: https://twitter.com/intent/follow?screen_name=nirantk
+    avatar: https://pbs.twimg.com/profile_images/1716473928590512128/F7cyV0D1_400x400.jpg
+  kumarshivendu:
+    name: Kumar Shivendu
+    description: Tech @ Qdrant
+    url: https://www.linkedin.com/in/kshivendu/
+    avatar: https://www.kshivendu.dev/_next/image?url=%2Fstatic%2Fimages%2Fshivendu.jpg
+  soumyadeepmukherjee:
+    name: Soumyadeep Mukherjee
+    description: CTO @ Dashtoon
+    url: https://www.linkedin.com/in/soumyadeepmukherjee/?originalSubdomain=in
+    avatar: https://media.licdn.com/dms/image/v2/D5603AQFeS5SlZm0TtA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1720680742582?e=1737590400&v=beta&t=wtG7NeAVQJw1c5hytigdeTwtIfaq7qvAI2WADmE1OdU
+  shyam-sankar:
+    name: Shyam Sankar
+    description: CTO @ Palantir
+    url: https://www.linkedin.com/in/shyamsankar/
+    avatar: https://substackcdn.com/image/fetch/w_264,c_limit,f_webp,q_auto:best,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F22ea7fc7-7bfb-46ef-bd62-1375af03b68c_1280x1280.png

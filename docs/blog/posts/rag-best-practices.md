@@ -3,7 +3,7 @@ authors:
   - nirant
 date: 2023-11-01
 categories:
-  - machine-learning
+  - Quick Notes
   - RAG
 title: Retrieval Augmented Generation Best Practices
 ---

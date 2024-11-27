@@ -3,9 +3,8 @@ date: 2024-10-06
 authors:
   - antaripa
 categories:
-  - RAG
-  - production
-  - machine-learning
+  - ColPali
+  - Document Retrieval
 ---
 
 # ColPali: Document Retrieval with Vision Language Models ✨

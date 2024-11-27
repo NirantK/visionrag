@@ -27,8 +27,7 @@ ColPali addresses this by using **Vision-Language Models (VLMs)** to understand 
     - **BiPali** for pairing image patches with PaliGemma.
     - **Late Interaction** to achieve state-of-the-art performance.
 
-![image.png](../images/lime-viz.png)
-This image is just for demonstration to give how images can be added here. 
+![image.png](../images/colpali_architecture_comparison.png)
 
 ---
 
@@ -216,8 +215,7 @@ $$
 LI(E_{\text{query}}, E_{\text{img}}) = \sum_{i=1}^{n} \text{MaxSim}(e'_i, E_{\text{img}})
 $$
     
-
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/92600531-2c3b-49dc-8a0a-ae3d4117a608/406f4594-4003-4ffb-abc4-acfe504896d2/image.png)
+![image.png](../images/late_interaction.png)
 
 The term **Late Interaction** refers to the idea that instead of merging or averaging embeddings from both the query and the document before comparison (as is often done in traditional dense retrieval methods), we **retain token-level interactions** until later in the retrieval process.
 
@@ -249,7 +247,7 @@ $$
 2. **Negative Similarity**: Similarly, the similarity between the query $q_k$ and any other document page $d_l$ is computed using the **max similarity** from Late Interaction: 
     
 $$
-s^-_k = max_{l ≠ k} LI(q_k, d_l)
+s^-_k = \max_{l \neq k} LI(q_k, d_l)
 $$
     
 3. **In-Batch Contrastive Loss**: The final **contrastive loss** for a batch of size **$b$**  is calculated using **softmaxed cross-entropy** between the positive score and all the negative scores:
